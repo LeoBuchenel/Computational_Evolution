@@ -1,6 +1,8 @@
 #ifndef PROJ_ANIMAL_H
 #define PROJ_ANIMAL_H
 
+//That's a comment
+
 #include "GeneticData.h"
 #include "Cell.h"
 #include <vector>
