@@ -3,6 +3,8 @@
 #include <vector>
 #include <iostream>
 
+//Ceci est un commentaire
+
 Cell::Cell(unsigned int x_, unsigned int y_)
 : x(x_), y(y_), food_density(2), nb_food(0), exist_food(false)
 {}
@@ -13,7 +15,7 @@ void Cell::initialiseFood(unsigned int density, unsigned int nb)
 	nb_food = nb;
 }
 
-void Cell::addAnimal(std::vector<Animal*> const& objs) 
+void Cell::addAnimal(std::vector<Animal*> const& objs)
 {
 	for(auto const& obj:objs){
 		if(obj != nullptr){
@@ -23,7 +25,7 @@ void Cell::addAnimal(std::vector<Animal*> const& objs)
 }
 
 void Cell::addAnimal(Animal* const& obj)
-{		
+{
 	if(obj != nullptr){
 		animal_list.push_back(obj);
 	}
@@ -51,7 +53,7 @@ void Cell::food_reproduce()
 				unsigned int food_to_add = std::rand() % (food_density) + 1;
 				addFood(food_to_add);
 		}
-		
+
 	}
 	//std::cout << "Tout va bien " << std::endl;
 
@@ -65,7 +67,7 @@ void Cell::addFood(unsigned int food)
 unsigned int Cell::decreaseFood(unsigned int a)
 {
 	unsigned int nbEaten(0);
-	
+
 	if(nb_food >= a){
 		nb_food -=a;
 		nbEaten = a;
@@ -97,9 +99,7 @@ void Cell::sortAnimals()
 	//std::cout << "Hors de sort cell"<< std::endl;
 }}
 
-			
+
 void Cell::set_exist_food(bool new_value){
 	exist_food = new_value;
 }
-
-
