@@ -40,6 +40,8 @@ double Animal::get_energy() const {
         return energy;
 }
 
+//here added
+
 std::vector<Animal*> Animal::reproduce(){
         std::vector<Animal*> newborns;
         if(energy>Animal::get_rep_threshold()) {
