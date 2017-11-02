@@ -1,6 +1,7 @@
 #include "Animal.h"
 #include <random>
 
+
 Animal::Animal(Cell* cell_){
         position = cell_;
         genetic_data = GeneticData();
@@ -44,7 +45,9 @@ std::vector<Animal*> Animal::reproduce(){
         std::vector<Animal*> newborns;
         if(energy>Animal::get_rep_threshold()) {
                 double offspringEnergy
-                        = energy/Animal::get_nb_offspring();
+
+                        = (energy-Animal::get_rep_threshold());
+                        ///Animal::get_nb_offspring();                       
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
                         //Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
                         newborns.push_back(new Animal(position, genetic_data, offspringEnergy));

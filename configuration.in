@@ -1,0 +1,15 @@
+% Parametres physiques :
+L = 30
+plants = 100
+animals = 100
+tfin = 500
+Animal zone = rectangle
+Animal zone parameter 1 = 0
+Animal zone parameter 2 = 0
+Animal zone parameter 3 = 30
+Animal zone parameter 4 = 30
+Plant zone = rectangle
+Plant zone parameter 1 = 0
+Plant zone parameter 2 = 0
+Plant zone parameter 3 = 30
+Plant zone parameter 4 = 30
