@@ -1,9 +1,13 @@
 #ifndef PROJ_ANIMAL_H
 #define PROJ_ANIMAL_H
 
+//That's a comment
+
 #include "GeneticData.h"
 #include "Cell.h"
 #include <vector>
+
+class Grid;
 
 class Animal {
 public:
@@ -13,7 +17,7 @@ Animal(Cell*, GeneticData, double);   // constructor with position, genetic_data
 void eat();
 std::vector<Animal*> reproduce();
 //void update_energy();
-std::vector<unsigned int> move();
+std::vector<int> move(Grid*);
 void changeCell(Cell*);
 
 unsigned int getX() const;

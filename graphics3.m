@@ -1,31 +1,82 @@
-%% Data Loading
-close all; clear all;
+close all; 
+clear all;
 
-data = load('plant.out');
+%% Data Loading
+
+ft = fittype( 'a*x-b*x*y', ...
+    'independent', {'x', 'y'}, 'dependent', 'z',...,
+    'coefficients', {'a','b'} );
+
+data = load('plant_test.out');
 N = sqrt(size(data,2)); % N = L-1
 tfin = size(data,1);
 
-sys_param = load('system_param.out');
-animal_param_begin = load('animal_param_begin.out');
-animal_param_end = load('animal_param_end.out');
+sys_param = load('system_param_test.out');
+animal_param_begin = load('animal_param_begin_test.out');
+animal_param_end = load('animal_param_end_test.out');
 t = [0:tfin-1];
+
+N1 = sys_param(:,1);
+N1fit = N1(1:end-1);
+N2 = sys_param(:,2);
+N2fit = N2(1:end-1);
+
+for i = 1 : size(N1, 1)-1
+   N1dot(i) = N1(i+1)-N1(i); 
+   N2dot(i) = N2(i+1)-N2(i);
+end
 
 MaxDensity = max(data(:));
 
+%% Lotka Volterra fit
+f1 = fit([N1fit N2fit], N1dot', ft);
+f2 = fit([N2fit N1fit], N2dot',ft);
+alpha = f2.a
+beta = f2.b
+gamma = -f1.a
+delta = -f1.b
+N1dotFit = f1.a*N1fit-f1.b*N1fit.*N2fit;
+N2dotFit = f2.a.*N2fit-f2.b*N1fit.*N2fit;
+
+N1LV(1) = N1(1);
+N2LV(1) = N2(1);
+
+for i = 1 : tfin-1
+   N1LV(i+1) = N1dotFit(i)+N1LV(i); 
+   N2LV(i+1) = N2dotFit(i)+N2LV(i); 
+end
 
 
-%% Animal/plant plot
+
+%% Derivatives plot
+
 figure
-plot(sys_param(:,1));
+plot(N1dot,'b.', 'MarkerSize', 17);
 hold on;
-plot(sys_param(:,2));
+plot(N2dot,'r.', 'MarkerSize', 17);
+plot(t(1:end-1),N1dotFit);
+plot(t(1:end-1), N2dotFit);
+xlim([0, tfin-1]);
+xlabel('$t$');
+ylabel('$\dot{N_i}(t)$');
+legend({'Animals (simulation)',  'Plants (simulation)','Animals (LV fit)', 'Plants (LV fit)'}, 'location', 'best');
+
+
+ %% Animal/plant plot
+figure
+plot(t,N1, 'b');
+hold on;
+plot(t,N2, 'r');
+%plot(t, N1LV, 'b--');
+%plot(t, N2LV, 'r--');
 xlabel('$t$');
 ylabel('Number of specimens');
 legend({'Animals', 'Plants'},'location', 'best');
 
+
 %% Histogram plot
 figure
-histogram(animal_param_begin(:,1),100);
+histogram(animal_param_begin(:,1));
 xlabel('force (beginning)');
 ylabel('Number of animals');
 
@@ -35,7 +86,8 @@ xlabel('Number of offsprings (beginning)');
 ylabel('Number of animals');
 
 figure
-histogram(animal_param_end(:,1),100);
+
+histogram(animal_param_end(:,1));
 xlabel('Force (end)');
 ylabel('Number of animals');
 

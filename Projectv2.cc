@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+
 // LES POINTS VONT DE 0 à L
 
 using namespace std;
@@ -46,8 +47,11 @@ int main(int argc, char *argv[]) {
         unsigned int PlantParam3 = configFile.get<unsigned int>("Plant zone parameter 3");
         unsigned int PlantParam4 = configFile.get<unsigned int>("Plant zone parameter 4");
 
+        string extension = configFile.get<string>("output");
+
         // creer l'ecosysteme
-        srand(time(NULL));
+        srand(time(NULL) +clock());
+
 
         Grid grid(L);
 
@@ -58,21 +62,21 @@ int main(int argc, char *argv[]) {
         Ecosystem ecosystem(&grid, animalZone, plantZone, nb_animals, nb_plants);
 
         ofstream write_AnimalX, write_AnimalY, write_Plant, write_SystemParam, write_AnimalParamBegin, write_AnimalParamEnd;
-        write_AnimalX.open("animal_x.out");
-        write_AnimalY.open("animal_y.out");
-        write_Plant.open("plant.out");
-        write_SystemParam.open("system_param.out");
-        write_AnimalParamBegin.open("animal_param_begin.out");
-        write_AnimalParamEnd.open("animal_param_end.out");
+        write_AnimalX.open("animal_x_"+extension+".out");
+        write_AnimalY.open("animal_y_"+extension+".out");
+        write_Plant.open("plant_"+extension+".out");
+        write_SystemParam.open("system_param_"+extension+".out");
+        write_AnimalParamBegin.open("animal_param_begin_"+extension+".out");
+        write_AnimalParamEnd.open("animal_param_end_"+extension+".out");
 
-		ecosystem.write_AnimalParam(write_AnimalParamBegin);
-		
-        for(size_t t(0); t<=tfin; ++t) {
+        ecosystem.write_AnimalParam(write_AnimalParamBegin);
+
+        for(size_t t(0); t<tfin; ++t) {
                 ecosystem.iteration(write_AnimalX,write_AnimalY, write_Plant, write_SystemParam);
         }
-		ecosystem.write(write_AnimalX, write_AnimalY, write_Plant, write_SystemParam);
-		ecosystem.write_AnimalParam(write_AnimalParamEnd);
-		
+        ecosystem.write(write_AnimalX, write_AnimalY, write_Plant, write_SystemParam);
+        ecosystem.write_AnimalParam(write_AnimalParamEnd);
+
         write_AnimalX.close();
         write_AnimalY.close();
         write_Plant.close();

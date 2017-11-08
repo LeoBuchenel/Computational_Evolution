@@ -86,18 +86,30 @@ Zone Grid::getZone(std::string form, unsigned int param1, unsigned int param2, u
 																								}
 																}
 								}
+								if(form=="whole") {
+																for(size_t x(0); x < grid.size(); ++x) {
+																								for(size_t y(0); y< grid.size(); ++y) {
+																																zone.push_back(grid[x][y]);
+																								}
+																}
+
+								}
 
 								return zone;
 }
 
 
-void Grid::food_reproduce() const
+void Grid::food_reproduce(size_t possible_cells) const
 {
-								for(auto const& line:grid) {
-																for(auto const& cell:line) {
-																								cell->food_reproduce();
-																}
-								}
+								/*
+								       unsigned int nbFood = this->getNbFood();
+								       double alpha = 1; // dN/dt = alpha*N
+								       for(auto const& line:grid) {
+								               for(auto const& cell:line) {
+								                       cell->food_reproduce(proba);
+								               }
+								       }
+								 */
 }
 
 unsigned int Grid::getNbFood() const
@@ -134,4 +146,12 @@ std::ostream& Grid::write_Plant(std::ostream& os) const
 
 std::size_t Grid::size() const {
 								return grid.size();
+}
+
+void reproduce(const Zone& zone, double alpha, unsigned int food){
+								unsigned int N = zone.size();
+								for(size_t i(0); i < alpha*food; ++i) {
+																unsigned int pick = std::rand() % N;
+																zone[pick]->addFood(1);
+								}
 }
