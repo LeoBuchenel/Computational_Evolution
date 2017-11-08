@@ -4,7 +4,7 @@
 Animal::Animal(Cell* cell_){
         position = cell_;
         genetic_data = GeneticData();
-        energy = 100.;
+        energy  = (std::rand() % 100) + 1;
         cell_->addAnimal(this);
 }
 
@@ -40,18 +40,16 @@ double Animal::get_energy() const {
         return energy;
 }
 
-//here added
-
 std::vector<Animal*> Animal::reproduce(){
         std::vector<Animal*> newborns;
         if(energy>Animal::get_rep_threshold()) {
                 double offspringEnergy
-                        = energy/Animal::get_nb_offspring();
+                        = 0.5*energy/Animal::get_nb_offspring();
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
                         //Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
                         newborns.push_back(new Animal(position, genetic_data, offspringEnergy));
                 }
-                energy = 0.5*Animal::get_rep_threshold();
+                energy = 0.5*energy;
         }
         return newborns;
 }
@@ -66,15 +64,15 @@ std::vector<unsigned int> Animal::move(){
         int X = position->getX();
         int Y = position->getY();
 
-        for(std::size_t i(0); i<get_nb_moves(); ++i) {
+        //for(std::size_t i(0); i<get_nb_moves(); ++i) {
                 int depl_x = (rand()%3)-1;
                 int depl_y = (rand()%3)-1;
                 if(!(X==0 and depl_x < 0))
                         X+=depl_x;
                 if(!(Y==0 and depl_y<0))
                         Y+=depl_y;
-                energy-=2.;
-        }
+                energy-=3.;
+        //}
 
         std::vector<unsigned int> new_pos;
         new_pos.push_back(X);
@@ -85,7 +83,7 @@ std::vector<unsigned int> Animal::move(){
 
 void Animal::eat() {
         //decreasefood retourne la quantité de food que l'animal mange
-        if(position->decreaseFood()!=0) energy+=20.;
+        if(position->decreaseFood()!=0) energy+=10.;
 }
 
 unsigned int Animal::getX() const
