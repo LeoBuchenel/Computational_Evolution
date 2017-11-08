@@ -5,12 +5,15 @@ GeneticData::GeneticData(){
 
         double x = (std::rand() % 100) + 1;
         force = x;
-        unsigned int a = 100/x;
+        unsigned int a = (std::rand() % 5) + 1;
         nb_moves = a;
+        //force = 100./a;
 
         unsigned int y = (std::rand() % 5) + 1;
         nb_offspring = y;
-        repr_threshold = y*30.;
+        double b = (std::rand() % 100) + 1;
+        repr_threshold = b;
+        //repr_threshold = 100./y;
 
 }
 

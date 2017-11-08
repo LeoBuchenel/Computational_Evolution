@@ -7,29 +7,31 @@
 class Ecosystem
 {
 private:
-	Grid* grid;
-	std::vector<Animal*> animal_list;
+Zone plant_zone;
+Zone animal_zone;
+Grid* grid;
+std::vector<Animal*> animal_list;
 public:
-	Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int);
-	~Ecosystem();
-	void move();
-	void animal_reproduce();
-	void food_reproduce();
+Ecosystem(Grid*, Zone const&, Zone const&,unsigned int, unsigned int);
+~Ecosystem();
+void move();
+void animal_reproduce();
+void food_reproduce();
 
-	std::ostream& write_animalX(std::ostream&) const;
-	std::ostream& write_animalY(std::ostream&) const;
-	std::ostream& write_systParam(std::ostream&) const;
-	std::ostream& write_AnimalParam(std::ostream&) const;
-	std::ostream& write_Plant(std::ostream&) const;
+std::ostream& write_animalX(std::ostream&) const;
+std::ostream& write_animalY(std::ostream&) const;
+std::ostream& write_systParam(std::ostream&) const;
+std::ostream& write_AnimalParam(std::ostream&) const;
+std::ostream& write_Plant(std::ostream&) const;
 
-	void write(std::ostream&, std::ostream&, std::ostream&, std::ostream&);
-
-
-	void animal_eat();
+void write(std::ostream&, std::ostream&, std::ostream&, std::ostream&);
 
 
+void animal_eat();
 
-	void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&);
+
+
+void iteration(std::ostream&, std::ostream&, std::ostream&, std::ostream&);
 };
 
 #endif //ECOSYSTEM_H

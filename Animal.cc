@@ -1,11 +1,11 @@
 #include "Animal.h"
+#include "Grid.h"
 #include <random>
-
 
 Animal::Animal(Cell* cell_){
         position = cell_;
         genetic_data = GeneticData();
-        energy = 100.;
+        energy = (std::rand()%100)+1;
         cell_->addAnimal(this);
 }
 
@@ -45,14 +45,13 @@ std::vector<Animal*> Animal::reproduce(){
         std::vector<Animal*> newborns;
         if(energy>Animal::get_rep_threshold()) {
                 double offspringEnergy
-
-                        = (energy-Animal::get_rep_threshold());
-                        ///Animal::get_nb_offspring();                       
+                        = 0.5*energy/Animal::get_nb_offspring();
+                ///Animal::get_nb_offspring();
                 for(std::size_t i(0); i<Animal::get_nb_offspring(); ++i) {
                         //Animal* ptr = new Animal(position, genetic_data, offspringEnergy);
                         newborns.push_back(new Animal(position, genetic_data, offspringEnergy));
                 }
-                energy = 0.5*Animal::get_rep_threshold();
+                energy = 0.5*energy;
         }
         return newborns;
 }
@@ -61,23 +60,37 @@ void Animal::changeCell(Cell* cell){
         position = cell;
 }
 
-std::vector<unsigned int> Animal::move(){
+std::vector<int> Animal::move(Grid* grid){
 
 
         int X = position->getX();
         int Y = position->getY();
+        unsigned int Taille = grid->size();
 
         for(std::size_t i(0); i<get_nb_moves(); ++i) {
                 int depl_x = (rand()%3)-1;
                 int depl_y = (rand()%3)-1;
-                if(!(X==0 and depl_x < 0))
-                        X+=depl_x;
-                if(!(Y==0 and depl_y<0))
-                        Y+=depl_y;
-                energy-=2.;
+                X+=depl_x;
+                Y+=depl_y;
+                energy-=1.0;
+
+                int X1 = X, Y1 = Y;
+
+                if(X1 >= Taille) X1 -= Taille;
+                if(X1 < 0) X1+=Taille;
+                if(Y1 >=Taille) Y1 -=Taille;
+                if(Y1 <0) Y1+=Taille;
+
+                unsigned int X2 = abs(X1);
+                unsigned int Y2 = abs(Y1);
+
+                if(grid->getCell(X2,Y2)->exist_food_on_cell()) {
+                        i = get_nb_moves();
+                }
+                //AJOUTER ICI LA DETECTION DE NOURRITURE
         }
 
-        std::vector<unsigned int> new_pos;
+        std::vector<int> new_pos;
         new_pos.push_back(X);
         new_pos.push_back(Y);
 
@@ -99,6 +112,6 @@ unsigned int Animal::getY() const
         return position->getY();
 }
 
-Cell* Animal::get_Position() const{
-	return position;
+Cell* Animal::get_Position() const {
+        return position;
 }
